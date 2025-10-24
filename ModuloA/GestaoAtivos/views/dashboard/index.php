@@ -156,69 +156,67 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     <style>
         :root {
             --primary-color: #2c3e50;
-            --secondary-color: #6c757d;
+            --secondary-color: #3498db;
+            --accent-color: #1abc9c;
+            --light-gray: #f8f9fa;
             --border-color: #e0e0e0;
         }
         
         body {
-            background-color: #f8f9fa;
+            background-color: #f5f7fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
         }
         
         .navbar {
             background-color: var(--primary-color) !important;
-            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .card {
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background-color: white;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
         
         .card-header {
             background-color: white;
             border-bottom: 1px solid var(--border-color);
-            font-weight: 500;
+            font-weight: 600;
             padding: 15px 20px;
         }
         
         h2, h5, h6 {
             color: var(--primary-color);
-            font-weight: 500;
+            font-weight: 600;
         }
         
-        .btn-outline-secondary {
-            border-color: var(--border-color);
-            color: var(--secondary-color);
-        }
-        
-        .btn-outline-secondary:hover {
-            background-color: #f8f9fa;
+        .btn-primary {
+            background-color: var(--secondary-color);
             border-color: var(--secondary-color);
+        }
+        
+        .btn-success {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
         }
         
         .table th {
             border-top: none;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--primary-color);
-            background-color: #f8f9fa;
-            font-size: 0.9rem;
-            padding: 12px 8px;
-        }
-        
-        .table td {
-            vertical-align: middle;
-            padding: 12px 8px;
-            font-size: 0.9rem;
         }
         
         .form-label {
             font-weight: 500;
             margin-bottom: 5px;
-            font-size: 0.9rem;
         }
         
         .page-title {
@@ -229,68 +227,169 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
         
         .metric-card {
             text-align: center;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background-color: white;
+            padding: 15px;
         }
         
         .metric-value {
             font-size: 1.8rem;
-            font-weight: 400;
-            color: var(--primary-color);
-            margin-bottom: 5px;
+            font-weight: 700;
+            color: var(--secondary-color);
         }
         
         .metric-label {
             font-size: 0.9rem;
-            color: var(--secondary-color);
+            color: #6c757d;
         }
-        
-        .progress {
-            background-color: #f8f9fa;
-            border: 1px solid var(--border-color);
-        }
-        
-        .progress-bar {
-            background-color: var(--primary-color);
-        }
-        
-        .table-danger {
-            background-color: #f8f9fa;
-        }
-        
-        .table-warning {
-            background-color: #f8f9fa;
-        }
+        <style>
+		:root {
+			--primary-color: #2c3e50;
+			--secondary-color: #3498db;
+			--accent-color: #1abc9c;
+			--light-gray: #f8f9fa;
+			--border-color: #e0e0e0;
+		}
+		
+		body {
+			background-color: #f5f7fa;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			color: #333;
+		}
+		
+		.navbar {
+			background-color: var(--primary-color) !important;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+		}
+		
+		.card {
+			border: none;
+			border-radius: 8px;
+			box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+			margin-bottom: 20px;
+		}
+		
+		.card-header {
+			background-color: white;
+			border-bottom: 1px solid var(--border-color);
+			font-weight: 600;
+			padding: 15px 20px;
+		}
+		
+		h2, h5, h6 {
+			color: var(--primary-color);
+			font-weight: 600;
+		}
+		
+		.btn-primary {
+			background-color: var(--secondary-color);
+			border-color: var(--secondary-color);
+		}
+		
+		.btn-success {
+			background-color: var(--accent-color);
+			border-color: var(--accent-color);
+		}
+		
+		.table th {
+			border-top: none;
+			font-weight: 600;
+			color: var(--primary-color);
+			background-color: var(--light-gray);
+		}
+		
+		.table td {
+			vertical-align: middle;
+		}
+		
+		.form-label {
+			font-weight: 500;
+			margin-bottom: 5px;
+		}
+		
+		.page-title {
+			border-bottom: 1px solid var(--border-color);
+			padding-bottom: 15px;
+			margin-bottom: 25px;
+		}
+		
+		.status-badge {
+			padding: 4px 8px;
+			border-radius: 4px;
+			font-size: 0.8rem;
+			font-weight: 500;
+		}
+		
+		.status-agendada {
+			background-color: #e3f2fd;
+			color: #1976d2;
+		}
+		
+		.status-concluida {
+			background-color: #e8f5e9;
+			color: #388e3c;
+		}
+		
+		.status-cancelada {
+			background-color: #ffebee;
+			color: #d32f2f;
+		}
+		
+		.status-em_andamento {
+			background-color: #fff3e0;
+			color: #f57c00;
+		}
+		
+		.pagination .page-link {
+			color: var(--secondary-color);
+		}
+		
+		.pagination .page-item.active .page-link {
+			background-color: var(--secondary-color);
+			border-color: var(--secondary-color);
+		}
+		
+		@media print {
+			.no-print { display: none !important; }
+			.card { box-shadow: none !important; border: 1px solid #dee2e6 !important; }
+			.table { border: 1px solid #dee2e6 !important; }
+		}
     </style>
 </head>
 <body>
-    <!-- Navbar Padronizada -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="../dashboard/index.php">
-                <i class="fas fa-tools me-2"></i>Gestão de Ativos
-            </a>
-            <div class="navbar-nav">
-                <a class="nav-link active" href="../dashboard/index.php">Dashboard</a>
-                <a class="nav-link" href="../manutencao/index.php">Manutenções</a>
-                <a class="nav-link" href="../monitoramento/index.php">Monitoramento</a>
-                <a class="nav-link" href="../historico/index.php">Histórico</a>
-                <a class="nav-link" href="../auth/logout.php">Sair</a>
-            </div>
-        </div>
-    </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark no-print">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="../dashboard/index.php">
+			<i class="fas fa-tools me-2"></i>Gestão de Ativos
+		</a>
+		<div class="navbar-nav">
+			<a class="nav-link" href="../dashboard/index.php">
+				<i class="fas fa-tachometer-alt me-1"></i>Dashboard
+			</a>
+			<a class="nav-link" href="../manutencao/index.php">
+				<i class="fas fa-wrench me-1"></i>Manutenções
+			</a>
+			<a class="nav-link" href="../monitoramento/index.php">
+				<i class="fas fa-heartbeat me-1"></i>Monitoramento
+			</a>
+			<a class="nav-link active" href="index.php">
+				<i class="fas fa-history me-1"></i>Histórico
+			</a>
+			<a class="nav-link" href="../auth/logout.php">
+				<i class="fas fa-sign-out-alt me-1"></i>Sair
+			</a>
+		</div>
+	</div>
+</nav>
+    <?php include '../includes/navbar.php'; ?>
     
     <div class="container mt-4">
         <div class="page-title">
             <div class="d-flex justify-content-between align-items-center">
-                <h2><i class="fas fa-tachometer-alt me-2"></i>Painel Gerencial</h2>
+                <h2>Painel Gerencial</h2>
                 <div>
                     <button class="btn btn-outline-secondary me-2" onclick="window.print()">
                         <i class="fas fa-print me-1"></i>Imprimir / PDF
                     </button>
-                    <button id="exportCsv" class="btn btn-outline-secondary">
+                    <button id="exportCsv" class="btn btn-success">
                         <i class="fas fa-file-export me-1"></i>Exportar CSV
                     </button>
                 </div>
@@ -311,7 +410,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
                         <input type="date" id="to" name="to" class="form-control">
                     </div>
                     <div class="col-md-3">
-                        <button type="button" class="btn btn-outline-secondary w-100" onclick="atualizarIndicadores()">
+                        <button type="button" class="btn btn-primary w-100" onclick="atualizarIndicadores()">
                             <i class="fas fa-filter me-1"></i>Aplicar Filtro
                         </button>
                     </div>
@@ -378,10 +477,10 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Previsão de Manutenção (IA)</h5>
                 <div>
-                    <button id="btnGerarPrevisoes" class="btn btn-outline-secondary btn-sm me-2" onclick="gerarPrevisoes()">
+                    <button id="btnGerarPrevisoes" class="btn btn-primary btn-sm me-2" onclick="gerarPrevisoes()">
                         <i class="fas fa-sync-alt me-1"></i>Gerar Previsões
                     </button>
-                    <a href="../previsao/index.php" class="btn btn-outline-secondary btn-sm">
+                    <a href="../previsao/index.php" class="btn btn-outline-primary btn-sm">
                         <i class="fas fa-external-link-alt me-1"></i>Abrir Módulo IA
                     </a>
                 </div>
@@ -406,11 +505,11 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
                             </thead>
                             <tbody>
                                 <?php foreach ($previsoes as $previsao): ?>
-                                    <tr>
+                                    <tr class="<?= ($previsao['probabilidade_falha'] > 80) ? 'table-danger' : 'table-warning' ?>">
                                         <td><?= htmlspecialchars($previsao['nome_ativo']) ?></td>
                                         <td>
                                             <div class="progress" style="height: 20px;">
-                                                <div class="progress-bar" 
+                                                <div class="progress-bar <?= ($previsao['probabilidade_falha'] > 80) ? 'bg-danger' : 'bg-warning' ?>" 
                                                      role="progressbar" 
                                                      style="width: <?= $previsao['probabilidade_falha'] ?>%;"
                                                      aria-valuenow="<?= $previsao['probabilidade_falha'] ?>" 
@@ -468,9 +567,8 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
                 labels,
                 datasets: [{
                     data: values,
-                    backgroundColor: ['#2c3e50', '#6c757d', '#495057', '#adb5bd', '#dee2e6'],
-                    borderWidth: 1,
-                    borderColor: '#fff'
+                    backgroundColor: generateColors(values.length),
+                    borderWidth: 1
                 }]
             },
             options: {
@@ -497,9 +595,8 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
                 labels,
                 datasets: [{
                     data: values,
-                    backgroundColor: ['#2c3e50', '#6c757d', '#495057', '#adb5bd'],
-                    borderWidth: 1,
-                    borderColor: '#fff'
+                    backgroundColor: generateColors(values.length),
+                    borderWidth: 1
                 }]
             },
             options: {
@@ -527,8 +624,8 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
                 datasets: [{
                     label: 'Custo (R$)',
                     data: values,
-                    borderColor: '#2c3e50',
-                    backgroundColor: 'rgba(44, 62, 80, 0.1)',
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
                     borderWidth: 2,
                     fill: true,
                     tension: 0.3
@@ -554,7 +651,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
         const container = document.getElementById('indicadoresRapidos');
         container.innerHTML = '';
         
-        const tpl = (title, value) => `
+        const tpl = (title, value, icon) => `
             <div class="col-md-4 mb-3">
                 <div class="metric-card">
                     <div class="metric-value">${value}</div>
@@ -566,6 +663,13 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
         container.innerHTML += tpl('Custo Total', info.total_custo ? `R$ ${Number(info.total_custo).toFixed(2)}` : 'R$ 0,00');
         container.innerHTML += tpl('Custo Médio', info.avg_custo ? `R$ ${Number(info.avg_custo).toFixed(2)}` : 'R$ 0,00');
         container.innerHTML += tpl('Total de Manutenções', info.total_manut ? info.total_manut : 0);
+    }
+
+    function generateColors(n) {
+        const palette = ['#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6', '#1abc9c', '#34495e'];
+        const out = [];
+        for(let i = 0; i < n; i++) out.push(palette[i % palette.length]);
+        return out;
     }
 
     // Inicialização: preenche com período padrão (últimos 12 meses)
