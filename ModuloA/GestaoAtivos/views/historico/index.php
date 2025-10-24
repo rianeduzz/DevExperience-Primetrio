@@ -197,7 +197,7 @@ $totalPages = (int)ceil($total / $limit);
 <nav class="navbar navbar-expand-lg navbar-dark no-print">
 	<div class="container-fluid">
 		<a class="navbar-brand" href="../dashboard/index.php">
-			<i class="fas fa-tools me-2"></i>Gestão de Ativos
+			<i class="fas fa-tools me-2"></i>Youtan
 		</a>
 		<div class="navbar-nav">
 			<a class="nav-link" href="../dashboard/index.php">

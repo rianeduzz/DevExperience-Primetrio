@@ -136,7 +136,7 @@ if ($res3) {
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Manutenções - Gestão de Ativos</title>
+    <title>Manutenções - Youtan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
@@ -246,7 +246,7 @@ if ($res3) {
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="../dashboard/index.php">
-            <i class="fas fa-tools me-2"></i>Gestão de Ativos
+            <i class="fas fa-tools me-2"></i>Youtan
         </a>
         <div class="navbar-nav">
             <a class="nav-link" href="../dashboard/index.php">

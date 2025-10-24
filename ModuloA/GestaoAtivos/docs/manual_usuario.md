@@ -1,4 +1,4 @@
-# Manual do Usuário - Gestão de Ativos
+# Manual do Usuário - Youtan
 
 Conteúdo:
 - Visão geral do sistema

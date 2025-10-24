@@ -23,6 +23,7 @@ try {
 </head>
 <body>
 	<?php include '../includes/navbar.php'; ?>
+	<!-- Se o navbar estiver inline em outras páginas, o brand deve ser 'Youtan' também -->
 
 	<div class="container mt-4">
 		<div class="d-flex justify-content-between align-items-center mb-3">
