@@ -7,6 +7,9 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
+                    <a class="nav-link" href="../dashboard/index.php">Dashboard</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="../manutencao/index.php">Manutenções</a>
                 </li>
                 <li class="nav-item">
@@ -14,6 +17,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="../historico/index.php">Histórico</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../previsao/index.php">Previsão (IA)</a>
                 </li>
             </ul>
             <span class="navbar-text">

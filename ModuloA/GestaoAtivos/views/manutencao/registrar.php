@@ -1,44 +1,17 @@
-<?php
-require_once '../../controllers/ManutencaoController.php';
-
-$controller = new ManutencaoController();
-$ativos = $controller->listarAtivos();
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $result = $controller->registrar($_POST);
-    if ($result['success']) {
-        header('Location: lista.php');
-        exit;
-    }
-}
-?>
-
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
+    <meta charset="UTF-8">
     <title>Registrar Manutenção</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h2>Registrar Manutenção</h2>
-    <form method="POST">
-        <select name="ativo_id" required>
-            <option value="">Selecione o Ativo</option>
-            <?php foreach ($ativos as $ativo): ?>
-                <option value="<?= $ativo['id'] ?>"><?= $ativo['nome'] ?></option>
-            <?php endforeach; ?>
-        </select>
+<body class="p-4">
+    <div class="container">
+        <h2>Registrar Manutenção</h2>
+        <p>Use a tela principal de Manutenções para registrar novas entradas.</p>
+        <a href="index.php" class="btn btn-primary">Ir para Manutenções</a>
+    </div>
 
-        <select name="tipo" required>
-            <option value="preventiva">Preventiva</option>
-            <option value="corretiva">Corretiva</option>
-        </select>
-
-        <input type="date" name="data" required>
-        <input type="text" name="responsavel_tecnico" placeholder="Responsável Técnico" required>
-        <input type="number" step="0.01" name="custo" placeholder="Custo" required>
-        <textarea name="descricao" placeholder="Descrição do serviço" required></textarea>
-
-        <button type="submit">Registrar Manutenção</button>
-    </form>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
