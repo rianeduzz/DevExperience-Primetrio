@@ -240,118 +240,6 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
             font-size: 0.9rem;
             color: #6c757d;
         }
-        <style>
-		:root {
-			--primary-color: #2c3e50;
-			--secondary-color: #3498db;
-			--accent-color: #1abc9c;
-			--light-gray: #f8f9fa;
-			--border-color: #e0e0e0;
-		}
-		
-		body {
-			background-color: #f5f7fa;
-			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-			color: #333;
-		}
-		
-		.navbar {
-			background-color: var(--primary-color) !important;
-			box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-		}
-		
-		.card {
-			border: none;
-			border-radius: 8px;
-			box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-			margin-bottom: 20px;
-		}
-		
-		.card-header {
-			background-color: white;
-			border-bottom: 1px solid var(--border-color);
-			font-weight: 600;
-			padding: 15px 20px;
-		}
-		
-		h2, h5, h6 {
-			color: var(--primary-color);
-			font-weight: 600;
-		}
-		
-		.btn-primary {
-			background-color: var(--secondary-color);
-			border-color: var(--secondary-color);
-		}
-		
-		.btn-success {
-			background-color: var(--accent-color);
-			border-color: var(--accent-color);
-		}
-		
-		.table th {
-			border-top: none;
-			font-weight: 600;
-			color: var(--primary-color);
-			background-color: var(--light-gray);
-		}
-		
-		.table td {
-			vertical-align: middle;
-		}
-		
-		.form-label {
-			font-weight: 500;
-			margin-bottom: 5px;
-		}
-		
-		.page-title {
-			border-bottom: 1px solid var(--border-color);
-			padding-bottom: 15px;
-			margin-bottom: 25px;
-		}
-		
-		.status-badge {
-			padding: 4px 8px;
-			border-radius: 4px;
-			font-size: 0.8rem;
-			font-weight: 500;
-		}
-		
-		.status-agendada {
-			background-color: #e3f2fd;
-			color: #1976d2;
-		}
-		
-		.status-concluida {
-			background-color: #e8f5e9;
-			color: #388e3c;
-		}
-		
-		.status-cancelada {
-			background-color: #ffebee;
-			color: #d32f2f;
-		}
-		
-		.status-em_andamento {
-			background-color: #fff3e0;
-			color: #f57c00;
-		}
-		
-		.pagination .page-link {
-			color: var(--secondary-color);
-		}
-		
-		.pagination .page-item.active .page-link {
-			background-color: var(--secondary-color);
-			border-color: var(--secondary-color);
-		}
-		
-		@media print {
-			.no-print { display: none !important; }
-			.card { box-shadow: none !important; border: 1px solid #dee2e6 !important; }
-			.table { border: 1px solid #dee2e6 !important; }
-		}
     </style>
 </head>
 <body>
@@ -361,8 +249,8 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
 			<i class="fas fa-tools me-2"></i>Gestão de Ativos
 		</a>
 		<div class="navbar-nav">
-			<a class="nav-link" href="../dashboard/index.php">
-				<i class="fas fa-tachometer-alt me-1"></i>Dashboard
+			<a class="nav-link active" href="index.php">
+				<i class="fas fa-history me-1"></i>Dashboard
 			</a>
 			<a class="nav-link" href="../manutencao/index.php">
 				<i class="fas fa-wrench me-1"></i>Manutenções
@@ -370,8 +258,8 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
 			<a class="nav-link" href="../monitoramento/index.php">
 				<i class="fas fa-heartbeat me-1"></i>Monitoramento
 			</a>
-			<a class="nav-link active" href="index.php">
-				<i class="fas fa-history me-1"></i>Histórico
+			<a class="nav-link" href="../manutencao/index.php">
+				<i class="fas fa-wrench me-1"></i>Histórico
 			</a>
 			<a class="nav-link" href="../auth/logout.php">
 				<i class="fas fa-sign-out-alt me-1"></i>Sair
