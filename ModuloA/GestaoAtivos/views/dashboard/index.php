@@ -4,6 +4,19 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: ../auth/login.php');
     exit;
 }
+
+require_once '../../controllers/AlertaController.php';
+require_once '../../controllers/PrevisaoController.php';
+
+$alertaController = new AlertaController();
+$previsaoController = new PrevisaoController();
+
+$alertas = $alertaController->listarAlertasPendentes();
+try {
+    $previsoes = $previsaoController->listarPrevisoes();
+} catch (Exception $e) {
+    $previsoes = [];
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -12,6 +25,7 @@ if (!isset($_SESSION['user_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel - Gestão de Ativos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <?php include '../includes/navbar.php'; ?>
@@ -77,6 +91,74 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </div>
 
+    <!-- Seção de Alertas -->
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h5>Alertas e Notificações</h5>
+            </div>
+            <div class="card-body">
+                <?php if (empty($alertas)): ?>
+                    <p class="text-muted">Nenhum alerta pendente.</p>
+                <?php else: ?>
+                    <div class="list-group">
+                        <?php foreach ($alertas as $alerta): ?>
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1"><?= $alerta['tipo'] ?></h6>
+                                    <small><?= date('d/m/Y', strtotime($alerta['data_alerta'])) ?></small>
+                                </div>
+                                <p class="mb-1"><?= $alerta['mensagem'] ?></p>
+                                <small>Ativo: <?= $alerta['nome_ativo'] ?></small>
+                                <button class="btn btn-sm btn-success float-end" 
+                                        onclick="marcarResolvido(<?= $alerta['id'] ?>)">
+                                    Marcar como resolvido
+                                </button>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção de Previsões de Manutenção -->
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5>Previsão de Manutenção (IA)</h5>
+            </div>
+            <div class="card-body">
+                <?php if (empty($previsoes)): ?>
+                    <p class="text-muted">Sistema de previsões em manutenção. Tente novamente mais tarde.</p>
+                <?php else: ?>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Ativo</th>
+                                    <th>Probabilidade de Falha</th>
+                                    <th>Previsão</th>
+                                    <th>Razões</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($previsoes as $previsao): ?>
+                                    <tr class="<?= $previsao['probabilidade_falha'] > 80 ? 'table-danger' : 'table-warning' ?>">
+                                        <td><?= $previsao['nome_ativo'] ?></td>
+                                        <td><?= number_format($previsao['probabilidade_falha'], 1) ?>%</td>
+                                        <td><?= date('d/m/Y', strtotime($previsao['data_previsao'])) ?></td>
+                                        <td><?= $previsao['razoes'] ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
     <!-- Youtan Helper Chatbot -->
     <div class="position-fixed bottom-0 end-0 m-3">
         <div class="card" style="width: 300px;" id="chatbot" style="display: none;">
@@ -138,6 +220,24 @@ if (!isset($_SESSION['user_id'])) {
                     chatMessages.scrollTop = chatMessages.scrollHeight;
                 }, 1000);
                 input.value = '';
+            }
+        }
+
+        function marcarResolvido(alertaId) {
+            if (confirm('Marcar este alerta como resolvido?')) {
+                fetch('../../controllers/marcar_resolvido.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ alerta_id: alertaId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    }
+                });
             }
         }
     </script>

@@ -82,6 +82,128 @@ $ativos = $controller->listarAtivosComLocalizacao($categoria);
         </div>
     </div>
 
+    <!-- Youtan Helper Chat -->
+    <div id="youtan-chat" class="chat-widget">
+        <button class="chat-button" onclick="toggleChat()">
+            <i class="fas fa-robot"></i> Youtan Helper
+        </button>
+        
+        <div id="chat-container" class="chat-container" style="display:none;">
+            <div class="chat-header">
+                <h5><i class="fas fa-robot"></i> Youtan Helper</h5>
+                <button class="close-btn" onclick="toggleChat()">&times;</button>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <div class="message bot">
+                    Olá! Sou o Youtan Helper, seu assistente virtual. 😊<br>
+                    Posso ajudar você com dúvidas sobre:<br>
+                    • Cadastro de manutenções<br>
+                    • Localização de ativos<br>
+                    • Relatórios e muito mais!<br><br>
+                    Gostaria de ver a lista de perguntas frequentes?<br>
+                    <div class="chat-options">
+                        <button onclick="mostrarFAQs()" class="option-btn">Sim, por favor</button>
+                        <button onclick="recusarAjuda()" class="option-btn">Não, obrigado</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chat-input" 
+                       placeholder="Digite sua pergunta..."
+                       onkeypress="if(event.key === 'Enter') enviarPergunta()">
+                <button onclick="enviarPergunta()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    .chat-widget {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+    .chat-button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .chat-container {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        width: 300px;
+        height: 400px;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        display: flex;
+        flex-direction: column;
+    }
+    .chat-header {
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+    }
+    .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+    }
+    .chat-input {
+        padding: 10px;
+        border-top: 1px solid #ddd;
+        display: flex;
+    }
+    .chat-input input {
+        flex: 1;
+        margin-right: 10px;
+    }
+    .message {
+        margin: 5px 0;
+        padding: 8px;
+        border-radius: 5px;
+    }
+    .message.bot {
+        background: #f1f1f1;
+    }
+    .message.user {
+        background: #007bff;
+        color: white;
+        margin-left: auto;
+    }
+    .chat-options {
+        margin-top: 10px;
+        display: flex;
+        gap: 10px;
+    }
+    .option-btn {
+        padding: 5px 10px;
+        border: 1px solid #007bff;
+        background: white;
+        color: #007bff;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .option-btn:hover {
+        background: #007bff;
+        color: white;
+    }
+    .faq-category {
+        font-weight: bold;
+        color: #0056b3;
+        margin-top: 10px;
+    }
+    </style>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function filtrarAtivos() {
@@ -113,6 +235,119 @@ $ativos = $controller->listarAtivosComLocalizacao($categoria);
                 alert("Localização atualizada para: " + novaLocalizacao);
                 // Atualize a página ou a linha conforme necessário
             }
+        }
+
+        function toggleChat() {
+            const container = document.getElementById('chat-container');
+            if (container.style.display === 'none') {
+                container.style.display = 'flex';
+                carregarFAQs(); // Carrega as FAQs quando abrir o chat
+            } else {
+                container.style.display = 'none';
+            }
+        }
+
+        function enviarPergunta() {
+            const input = document.getElementById('chat-input');
+            const mensagem = input.value.trim().toLowerCase();
+            if (!mensagem) return;
+
+            // Adiciona mensagem do usuário
+            addMessage(mensagem, 'user');
+            input.value = '';
+
+            // Trata respostas simples sim/não
+            if (mensagem === 'sim' || mensagem === 'yes' || mensagem === 's') {
+                mostrarFAQs();
+                return;
+            } else if (mensagem === 'não' || mensagem === 'nao' || mensagem === 'no' || mensagem === 'n') {
+                recusarAjuda();
+                return;
+            }
+
+            // Se não for sim/não, envia para o backend
+            fetch('../../api/chatbot.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pergunta: mensagem })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resposta = data.resposta.replace(/\n/g, '<br>');
+                addMessage(resposta, 'bot');
+            })
+            .catch(() => {
+                addMessage('Desculpe, tive um problema. Tente novamente.', 'bot');
+            });
+        }
+
+        function mostrarFAQs() {
+            addMessage('Ótimo! Aqui estão as principais dúvidas por categoria:', 'bot');
+            
+            // Adiciona mensagem de carregamento
+            const loadingMessage = addMessage('Carregando perguntas frequentes...', 'bot');
+            
+            fetch('../../api/faq.php')
+                .then(response => response.json())
+                .then(data => {
+                    // Remove mensagem de carregamento
+                    loadingMessage.remove();
+                    
+                    let categorias = {};
+                    data.faqs.forEach(faq => {
+                        if (!categorias[faq.categoria]) {
+                            categorias[faq.categoria] = [];
+                        }
+                        categorias[faq.categoria].push(faq);
+                    });
+
+                    Object.keys(categorias).forEach(categoria => {
+                        addMessage(`<div class="faq-category">${categoria}:</div>`, 'bot');
+                        categorias[categoria].forEach(faq => {
+                            const div = document.createElement('div');
+                            div.className = 'faq-item';
+                            div.textContent = faq.pergunta;
+                            div.onclick = () => {
+                                addMessage(faq.pergunta, 'user');
+                                addMessage(faq.resposta + '<br><br>' + faq.exemplo_pratico, 'bot');
+                            };
+                            document.getElementById('chat-messages').appendChild(div);
+                        });
+                    });
+                });
+        }
+
+        function recusarAjuda() {
+            addMessage('Ok! Se precisar de ajuda, é só digitar sua pergunta ou clicar em uma das opções quando elas aparecerem.', 'bot');
+        }
+
+        function addMessage(text, type) {
+            const messages = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.className = `message ${type}`;
+            div.innerHTML = text;
+            messages.appendChild(div);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        // Adicionar após toggleChat()
+        function carregarFAQs() {
+            fetch('../../api/faq.php')
+                .then(response => response.json())
+                .then(data => {
+                    const faqList = document.getElementById('faq-list');
+                    faqList.innerHTML = '';
+                    data.perguntas.forEach(pergunta => {
+                        const div = document.createElement('div');
+                        div.className = 'faq-item';
+                        div.textContent = pergunta;
+                        div.onclick = () => {
+                            document.getElementById('chat-input').value = pergunta;
+                            enviarPergunta();
+                        };
+                        faqList.appendChild(div);
+                    });
+                });
         }
     </script>
 </body>
