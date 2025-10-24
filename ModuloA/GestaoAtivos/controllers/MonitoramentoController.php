@@ -9,11 +9,11 @@ class MonitoramentoController {
     }
 
     public function listarAtivosComLocalizacao($categoria = null) {
-        // Corrigido para garantir o relacionamento correto com localizacoes
         $sql = "SELECT a.*, u.nome as responsavel, l.descricao as localizacao 
                 FROM ativos a 
                 LEFT JOIN usuarios u ON a.responsavel_id = u.id 
                 LEFT JOIN localizacoes l ON a.localizacao_id = l.id";
+        
         if ($categoria) {
             $sql .= " WHERE a.categoria = ?";
             return $this->db->query($sql, [$categoria])->fetchAll(PDO::FETCH_ASSOC);
