@@ -1,11 +1,20 @@
 <?php
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'gestao_ativos');
+if (!defined('DB_HOST')) define('DB_HOST', 'localhost');
+if (!defined('DB_USER')) define('DB_USER', 'root');
+if (!defined('DB_PASS')) define('DB_PASS', '');
+if (!defined('DB_NAME')) define('DB_NAME', 'gestao_ativos');
 
-require_once 'config.php';
+// carrega config geral se existir
+if (file_exists(__DIR__ . '/config.php')) {
+    require_once __DIR__ . '/config.php';
+}
 
+// inclui a implementação única da classe Database (use require_once para evitar múltiplas inclusões)
+if (file_exists(__DIR__ . '/../includes/Database.php')) {
+    require_once __DIR__ . '/../includes/Database.php';
+}
+
+// OBS: A classe Database foi removida deste arquivo para evitar redeclaração.
 class Database {
     private $conexao;
 
